@@ -26,7 +26,6 @@ bot.on('message',function(message){
             language: 'fr',
           }).then(response => {
               message.channel.send(response.articles[random].url);
-            console.log(response);
 
           });
     }
