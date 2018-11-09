@@ -16,19 +16,21 @@ alban = [   'Est chef de projet',
         ];
 
 bot.on('message',function(message){
-    switch(message.content) {
-        case '!alban' :
-            random = Math.floor(Math.random() * Math.floor(alban.length));
-            message.channel.send(alban[random]);
-            break;
+    if(message.content === '!alban') {
+        random = Math.floor(Math.random() * Math.floor(alban.length));
+        message.channel.send(alban[random]);
+    }
+})
 
-        case '!mexicain' :
-            message.channel.send("https://gph.is/2ONGacO");
-            break;
+bot.on('message',function(message){
+    if(message.content === '!mexicain') {
+        message.channel.send("https://gph.is/2ONGacO");
+    }
+})
 
-        case '!lucas' :
-            message.channel.send("http://gph.is/1AaMetU");
-            break;
+bot.on('message',function(message){
+    if(message.content === '!lucas') {
+        message.channel.send("http://gph.is/1AaMetU");
     }
 })
 
