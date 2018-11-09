@@ -31,7 +31,14 @@ bot.on('message',function(message){
         });
     }});
 
-
+bot.on('message',function(message){
+        if (message.content ==='AH'){
+    
+            message.channel.send('https://pbs.twimg.com/profile_images/805774049892855808/Qw1m1Uvo.jpg')
+            message.channel.send('AH !')
+    
+        }
+    });
 
 bot.on('message',function(message){
     if(message.content === '!alban') {
