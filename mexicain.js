@@ -1,9 +1,26 @@
 const Discord = require('discord.js');
-var latestTweets = require('latest-tweets');
-const fs = require('fs');
 const bot = new Discord.Client();
+var giphy = require('giphy-api')('Ro7bcKjdOHLN5pbSqL5ahwkV6VgUpJEx');
 
 alban = ['Est chef de projet','Est un con','Développe sous windev','Est délégué de classe','Est surement ton père','Fait l\'amour à ta maman'];
+
+
+
+
+
+
+bot.on('message',function(message){
+
+    if(message.content.startsWith('!rgif')) {
+
+        let args = message.content.split(' ')
+        args.shift();
+        giphy.random(args.join(''), function (err, res) {
+            message.channel.send(res.data.url);
+        });
+    }});
+
+    
 
 bot.on('message',function(message){
     if (message.content ==='!alban'){
@@ -39,5 +56,5 @@ bot.on('ready', () => {
 sendGif();
 //getTweet();
 setInterval(sendGif,14400000);
-bot.login('');
+bot.login('NDA4Mzc3MzM5NDIxMTMwNzU0.DsbggA.IYdGp60T6avaJgUH5UW1LtQdvCs');
 
