@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
+const NewsAPI = require('newsapi');
+const newsapi = new NewsAPI(config.token.newsapi);
 
 alban = [   'Est chef de projet',
             'Est un con',
@@ -16,14 +18,23 @@ alban = [   'Est chef de projet',
         ];
 
 
+bot.on('message',function(message){
+    if (message.content ==='!news'){
+        random = Math.floor(Math.random() * Math.floor(20));
 
+        newsapi.v2.topHeadlines({
+            language: 'fr',
+          }).then(response => {
+              message.channel.send(response.articles[random].url);
+            console.log(response);
 
+          });
+    }
+});
 
 
 bot.on('message',function(message){
-
     if(message.content.startsWith('!rgif')) {
-
         let args = message.content.split(' ')
         args.shift();
         giphy.random(args.join(''), function (err, res) {
@@ -75,4 +86,4 @@ bot.on('ready', () => {
 })
 sendGif();
 setInterval(sendGif,14400000);
-bot.login(config.token.discord);
+bot.login(config.token.discord)
