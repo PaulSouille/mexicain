@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('./config');
 const bot = new Discord.Client();
 
 alban = ['Est chef de projet','Est un con','Développe sous windev','Est délégué de classe','Est surement ton père','Fait l\'amour à ta maman'];
@@ -36,5 +37,5 @@ bot.on('ready', () => {
 })
 sendGif();
 setInterval(sendGif,14400000);
-bot.login('');
+bot.login(config.token.discord);
 
