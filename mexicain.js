@@ -20,7 +20,7 @@ bot.on('message',function(message){
         });
     }});
 
-    
+
 
 bot.on('message',function(message){
     if (message.content ==='!alban'){
@@ -56,5 +56,5 @@ bot.on('ready', () => {
 sendGif();
 //getTweet();
 setInterval(sendGif,14400000);
-bot.login('NDA4Mzc3MzM5NDIxMTMwNzU0.DsbggA.IYdGp60T6avaJgUH5UW1LtQdvCs');
+bot.login('');
 
