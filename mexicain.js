@@ -9,7 +9,7 @@ alban = [   'Est chef de projet',
             'Est délégué de classe',
             'Est surement ton père',
             'Fait l\'amour à ta maman',
-            ':smirk:'
+            ':smirk:',
             'Est beau',
             'Peut casser 3 pattes à un canard',
             'Se ferait bien un kebab ce midi'
