@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-var latestTweets = require('latest-tweets');
-const fs = require('fs');
 const bot = new Discord.Client();
 
 alban = ['Est chef de projet','Est un con','Développe sous windev','Est délégué de classe','Est surement ton père','Fait l\'amour à ta maman'];
@@ -37,7 +35,6 @@ bot.on('ready', () => {
     bot.user.setActivity('Plier des chaises');
 })
 sendGif();
-//getTweet();
 setInterval(sendGif,14400000);
 bot.login('');
 
