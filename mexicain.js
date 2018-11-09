@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
+const config = require('./config');
 const bot = new Discord.Client();
-var giphy = require('giphy-api')('Ro7bcKjdOHLN5pbSqL5ahwkV6VgUpJEx');
+var giphy = require('giphy-api')(config.token.giphy);
 
 alban = [   'Est chef de projet',
             'Est un con',
@@ -67,4 +68,4 @@ bot.on('ready', () => {
 })
 sendGif();
 setInterval(sendGif,14400000);
-bot.login('');
+bot.login(config.token.discord);
