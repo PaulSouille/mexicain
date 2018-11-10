@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
+const NewsAPI = require('newsapi');
+const newsapi = new NewsAPI(config.token.newsapi);
 
 const chips = require('./chips');
 chips.init(bot);
@@ -19,13 +21,32 @@ alban = [   'Est chef de projet',
         ];
 
 bot.on('message',function(message){
-    if(message.content.startsWith('!rgif')) {
+    if (message.content ==='!news'){
+        random = Math.floor(Math.random() * Math.floor(20));
 
+        newsapi.v2.topHeadlines({
+            language: 'fr',
+          }).then(response => {
+              message.channel.send(response.articles[random].url);
+
+          });
+    }
+});
+
+bot.on('message',function(message){
+    if(message.content.startsWith('!rgif')) {
         let args = message.content.split(' ')
         args.shift();
         giphy.random(args.join(''), function (err, res) {
             message.channel.send(res.data.url);
         });
+    }
+});
+
+bot.on('message',function(message){
+    if (message.content ==='AH'){
+        message.channel.send('https://pbs.twimg.com/profile_images/805774049892855808/Qw1m1Uvo.jpg')
+        message.channel.send('AH !')
     }
 });
 
