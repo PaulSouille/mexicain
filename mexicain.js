@@ -63,6 +63,6 @@ function sendGif(){
 bot.on('ready', () => {
     bot.user.setActivity('plier des chaises');
 })
-sendGif();
+
 setInterval(sendGif,14400000);
 bot.login(config.token.discord);
