@@ -3,6 +3,9 @@ const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
 
+const chips = require('./chips');
+chips.init(bot);
+
 alban = [   'Est chef de projet',
             'Est un con',
             'Développe sous Windev',
@@ -15,13 +18,7 @@ alban = [   'Est chef de projet',
             'Se ferait bien un kebab ce midi'
         ];
 
-
-
-
-
-
 bot.on('message',function(message){
-
     if(message.content.startsWith('!rgif')) {
 
         let args = message.content.split(' ')
@@ -29,9 +26,8 @@ bot.on('message',function(message){
         giphy.random(args.join(''), function (err, res) {
             message.channel.send(res.data.url);
         });
-    }});
-
-
+    }
+});
 
 bot.on('message',function(message){
     if(message.content === '!alban') {
@@ -60,9 +56,10 @@ function sendGif(){
 	    bot.channels.get('463332456695595031').send("https://gph.is/2ONGacO");
 	}
     catch{
-	console.log('error');
+        console.log('error');
+    }
 }
-}
+
 bot.on('ready', () => {
     bot.user.setActivity('plier des chaises');
 })
