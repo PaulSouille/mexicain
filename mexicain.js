@@ -50,13 +50,10 @@ bot.on('message',function(message){
 
 function sendGif(){
     try{
-
-        bot.channels.get('509766652531965964').send("https://gph.is/2ONGacO");
-
-	    bot.channels.get('463332456695595031').send("https://gph.is/2ONGacO");
+        bot.channels.find(x => x.name === "bot").send("https://gph.is/2ONGacO");
 	}
-    catch{
-        console.log('error');
+    catch (e){
+        console.log(e.stack);
     }
 }
 
