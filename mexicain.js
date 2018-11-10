@@ -5,6 +5,9 @@ var giphy = require('giphy-api')(config.token.giphy);
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI(config.token.newsapi);
 
+const chips = require('./chips');
+chips.init(bot);
+
 alban = [   'Est chef de projet',
             'Est un con',
             'Développe sous Windev',
@@ -16,7 +19,6 @@ alban = [   'Est chef de projet',
             'Peut casser 3 pattes à un canard',
             'Se ferait bien un kebab ce midi'
         ];
-
 
 bot.on('message',function(message){
     if (message.content ==='!news'){
@@ -31,7 +33,6 @@ bot.on('message',function(message){
     }
 });
 
-
 bot.on('message',function(message){
     if(message.content.startsWith('!rgif')) {
         let args = message.content.split(' ')
@@ -39,16 +40,15 @@ bot.on('message',function(message){
         giphy.random(args.join(''), function (err, res) {
             message.channel.send(res.data.url);
         });
-    }});
+    }
+});
 
 bot.on('message',function(message){
-        if (message.content ==='AH'){
-    
-            message.channel.send('https://pbs.twimg.com/profile_images/805774049892855808/Qw1m1Uvo.jpg')
-            message.channel.send('AH !')
-    
-        }
-    });
+    if (message.content ==='AH'){
+        message.channel.send('https://pbs.twimg.com/profile_images/805774049892855808/Qw1m1Uvo.jpg')
+        message.channel.send('AH !')
+    }
+});
 
 bot.on('message',function(message){
     if(message.content === '!alban') {
@@ -71,18 +71,16 @@ bot.on('message',function(message){
 
 function sendGif(){
     try{
-
-        bot.channels.get('509766652531965964').send("https://gph.is/2ONGacO");
-
-	    bot.channels.get('463332456695595031').send("https://gph.is/2ONGacO");
+        bot.channels.find(x => x.name === "bot").send("https://gph.is/2ONGacO");
 	}
-    catch{
-	console.log('error');
+    catch (e){
+        console.log(e.stack);
+    }
 }
-}
+
 bot.on('ready', () => {
     bot.user.setActivity('plier des chaises');
 })
-sendGif();
+
 setInterval(sendGif,14400000);
-bot.login(config.token.discord)
+bot.login(config.token.discord);
