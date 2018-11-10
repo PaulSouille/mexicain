@@ -25,21 +25,22 @@ module.exports = {
         
         
         //Liberer un joueur chipsé quand on le ping
-        bot.on('message', function(message){
-            try {
-                let role = getChipsedRole(message.guild);
-            
+        bot.on('message', async function(message){
+            try {          
                 if(message.author != bot.user) { //Si ce n'est pas le bot qui parle
                     if(chipsedUser.length > 0) { //Si il y a au moins un utilisateur chipsé
-                        message.mentions.members.forEach(function (memberMentionned) { //Pour chaque utilisateur mentionné dans le message
+                        message.mentions.members.forEach(async function (memberMentionned) { //Pour chaque utilisateur mentionné dans le message
                             let index = chipsedUser.indexOf(memberMentionned);  //On essai de récupérer l'utilisateur mentionné dans le tableau des utilisateurs chipsé
                             
                             if(index >= 0) { //Si on a mentionné un utilisateur chipsé, on le libère
                                 let user = chipsedUser[index];
                                 chipsedUser.splice(index, 1);
 
-                                user.removeRole(role);
-                                message.channel.send(user + " a été libéré par " + message.author.username);
+                                await getChipsedRole(message.guild)
+                                .then(function(role) {
+                                    user.removeRole(role);
+                                    message.channel.send(user + " a été libéré par " + message.author.username);
+                                })
                             }
                         });
                     }
@@ -65,11 +66,13 @@ module.exports = {
                                     var authorToMute = beforeLastMessage.member;
                                 }
             
-                                let role = getChipsedRole(message.guild);
-            
-                                await(authorToMute.addRole(role));
-                                chipsedUser.push(authorToMute)
-                                message.channel.send(authorToMute + " a été chipsé par " + message.author.username);
+                                await getChipsedRole(message.guild)
+                                .then(function(role) {
+                                    authorToMute.addRole(role);
+                                    chipsedUser.push(authorToMute)
+                                    message.channel.send(authorToMute + " a été chipsé par " + message.author.username);
+                                })
+                                
                             }
                             else {
                                 message.channel.send("Les deux messages ont été envoyé à plus d'une seconde d'intervalle !")     
