@@ -7,12 +7,15 @@ module.exports = {
         //Enleve le role chipsé à tous les utilisateurs à l'initialisation du bot
         bot.on('ready', function() {
             try {
-                bot.guilds.forEach( function (guild) {
-                    let role = getChipsedRole(guild);
-                
-                    guild.members.forEach( function(member) {
-                        member.removeRole(role);
+                bot.guilds.forEach( async function (guild) {
+                    await getChipsedRole(guild)
+                    .then(function (role) {
+                        guild.members.forEach( function(member) {
+                            member.removeRole(role);
+                        });
                     });
+
+                    
                 })
             }
             catch (e) {
@@ -92,32 +95,51 @@ module.exports = {
  }
 
  //Récupérer le role Chipsé et le créer s'il n'existe pas
- function getChipsedRole(guild) {
+ async function getChipsedRole(guild) {
     try {
         let role = guild.roles.find(r => r.name === "Chipsé !");
+
         if(!role){
             try {
-                role = guild.createRole({
-                    name: "Chipsé !",
-                    color:"#000000",
-                    permissions:[]
-                });
+                let role = await createRole(guild)
 
                 guild.channels.forEach(async (channel, id) => {
-                    channel.overwritePermissions(role, {
-                        SEND_MESSAGES: false,
-                        ADD_REACTIONS: false
-                    });
+                    channel.overwritePermissions(
+                        role,
+                        {
+                            SEND_MESSAGES: false,
+                            ADD_REACTIONS: false
+                        }
+                    );
                 });
+
+                return role;
             }
             catch (e) {
                 console.log(e.stack)
             }
         }
-
-        return role;
+        else {
+            return role;
+        }
     }
     catch (e) {
         console.log(e.stack)
     }
+}
+
+async function createRole(guild) {
+    //Role to the top
+    let botRole = guild.roles.find(r => r.name === "BotMexicain");
+    if(!botRole) {
+        throw "Il n'existe aucun role <BotMexicain> !";
+    }
+    let botRolePosition = botRole.calculatedPosition;
+
+    return guild.createRole({
+        name: "Chipsé !",
+        color:"#000000",
+        position: botRolePosition,
+        permissions:[]
+    });
 }
