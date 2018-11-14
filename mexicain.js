@@ -7,7 +7,7 @@ const newsapi = new NewsAPI(config.token.newsapi);
 
 const chips = require('./chips');
 chips.init(bot);
-
+//TEST PUSH
 alban = [   'Est chef de projet',
             'Est un con',
             'Développe sous Windev',
