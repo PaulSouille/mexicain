@@ -9,7 +9,7 @@ const chips = require('./chips');
 chips.init(bot);
 //TEST PUSH
 //test push 2
-
+//test psuh 3
 alban = [   'Est chef de projet',
             'Est un con',
             'Développe sous Windev',
