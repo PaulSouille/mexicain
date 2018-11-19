@@ -35,8 +35,34 @@ module.exports = {
 
     getFrString : function(date) {
         if(date != "" && date instanceof Date) {
-            var month = date.getMonth() + 1;
-            return ('0' + date.getDate()).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + date.getFullYear();
+            return date.toLocaleDateString("fr-FR");
+        }
+    }, 
+
+    etreJourEpsi: function(date) {
+        return this.getNbCours(date) > 0;
+    },
+
+    getNbCours: function(date) {
+        strDate = date.toLocaleDateString("en-US");
+
+        var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+        const Http = new XMLHttpRequest();
+        const url='http://edtmobilite.wigorservices.net/WebPsDyn.aspx?Action=posETUD&serverid=h&tel=charly.caillon&date=' + strDate + ' 8:00';
+        
+        Http.open("GET", url, false);
+        Http.send();
+
+        var response = Http.responseText;
+        var regex = new RegExp('class="Ligne"', "gm")
+
+
+        var nbCours = response.match(regex);
+        if(nbCours == null) {
+            return 0
+        }
+        else {
+            return nbCours.length;
         }
     }
 }
