@@ -7,6 +7,7 @@ const newsapi = new NewsAPI(config.token.newsapi);
 const Tools = require('./Tools.js')
 const chips = require('./chips');
 const request = require('request');
+const dateHelper = require('./date.js');
 chips.init(bot);
 
 alban = [   'Est chef de projet',
@@ -96,7 +97,9 @@ bot.on('message',function(message){
 
 function sendGif(){
     try{
-        bot.channels.find(x => x.name === "bot").send("https://gph.is/2ONGacO");
+        if(dateHelper.etreJourOuvre(new Date())) {
+            bot.channels.find(x => x.name === "bot").send("https://gph.is/2ONGacO");
+        }
 	}
     catch (e){
         console.log(e.stack);
