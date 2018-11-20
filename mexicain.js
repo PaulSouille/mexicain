@@ -79,7 +79,7 @@ bot.on('message',function(message){
 
 function sendGif(){
     try{
-        if(dateHelper.etreJourOuvre(new Date())) {
+        if(dateHelper.etreJourEpsi(new Date())) {
             bot.channels.find(x => x.name === "bot").send("https://gph.is/2ONGacO");
         }
 	}
