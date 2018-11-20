@@ -25,18 +25,13 @@ alban = [   'Est chef de projet',
 bot.on('message',function(message){
     if (message.content ==='!news'){
         random = Math.floor(Math.random() * Math.floor(20));
-
         newsapi.v2.topHeadlines({
             language: 'fr',
           }).then(response => {
               message.channel.send(response.articles[random].url);
-
           });
     }
 });
-
-
-
 bot.on('message',function(message){
     var url = config.url.api+"/message?event="+message;
     request.get({
@@ -69,12 +64,7 @@ bot.on('message',function(message){
     }
 });
 
-bot.on('message',function(message){
-    if (message.content ==='AH'){
-        message.channel.send('https://pbs.twimg.com/profile_images/805774049892855808/Qw1m1Uvo.jpg')
-        message.channel.send('AH !')
-    }
-});
+
 
 bot.on('message',function(message){
     if(message.content === '!alban') {
@@ -83,17 +73,9 @@ bot.on('message',function(message){
     }
 })
 
-bot.on('message',function(message){
-    if(message.content === '!mexicain') {
-        message.channel.send("https://gph.is/2ONGacO");
-    }
-})
 
-bot.on('message',function(message){
-    if(message.content === '!lucas') {
-        message.channel.send("http://gph.is/1AaMetU");
-    }
-})
+
+
 
 function sendGif(){
     try{
