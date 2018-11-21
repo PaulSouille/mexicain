@@ -52,13 +52,13 @@ module.exports = {
         });
         
 
-        //Chipsé un joueur
+        //Chipser un joueur
         bot.on('message', async function(message){
             try {
                 if(message.content === '!chips') {
                     if(beforeLastMessage.content == lastMessage.content) {
                         if(beforeLastMessage.author != lastMessage.author) {
-                            if((lastMessage.createdTimestamp - beforeLastMessage.createdTimestamp) <= 1000) {
+                            if((lastMessage.createdTimestamp - beforeLastMessage.createdTimestamp) <= 3000) {
                                 if(beforeLastMessage.author == message.author) {
                                     var authorToMute = lastMessage.member;
                                 }
