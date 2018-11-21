@@ -2,8 +2,6 @@ const Discord = require('discord.js');
 const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
-const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI(config.token.newsapi);
 const Tools = require('./Tools.js')
 const chips = require('./chips');
 const request = require('request');
@@ -22,37 +20,48 @@ alban = [   'Est chef de projet',
             'Se ferait bien un kebab ce midi'
         ];
 
-bot.on('message',function(message){
-    if (message.content ==='!news'){
-        random = Math.floor(Math.random() * Math.floor(20));
-        newsapi.v2.topHeadlines({
-            language: 'fr',
-          }).then(response => {
-              message.channel.send(response.articles[random].url);
-          });
-    }
-});
-bot.on('message',function(message){
-    var url = config.url.api+"/message?event="+message;
-    request.get({
-        url: url,
-        json: true,
-        headers: {'User-Agent': 'request'}
-      }, (err, res, data) => {
-        if (err) {
-            console.log(err);
-        } else if (res.statusCode !== 200) {
-            console.log('Status:', res.statusCode);
-        } else {
-            console.log(data);
-            if(data.error != 'EMPTY'){
-                console.log(data.data[0].response);
-                message.channel.send(data.data[0].response);
-        }
-    }
-    });
-})
 
+if(typeof config.token.newsapi !== 'undefined' && config.token.newsapi !== '') { //Si la clé d'api n'est pas spécifié, on écoute pas l'évenement
+    const NewsAPI = require('newsapi');
+    const newsapi = new NewsAPI(config.token.newsapi);
+
+    bot.on('message',function(message){
+        if (message.content ==='!news'){
+
+            random = Math.floor(Math.random() * Math.floor(20));
+            newsapi.v2.topHeadlines({
+                language: 'fr',
+            }).then(response => {
+                message.channel.send(response.articles[random].url);
+            });
+        }
+    });
+}
+
+
+if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url de l'api n'est pas spécifié, on écoute pas l'évenement
+    console.log("test");
+    bot.on('message',function(message){
+        var url = config.url.api+"/message?event="+message;
+        request.get({
+            url: url,
+            json: true,
+            headers: {'User-Agent': 'request'}
+        }, (err, res, data) => {
+            if (err) {
+                console.log(err);
+            } else if (res.statusCode !== 200) {
+                console.log('Status:', res.statusCode);
+            } else {
+                console.log(data);
+                if(data.error != 'EMPTY'){
+                    console.log(data.data[0].response);
+                    message.channel.send(data.data[0].response);
+            }
+        }
+        });
+    })
+}
 
 bot.on('message',function(message){
     if(message.content.startsWith('!rgif')) {
