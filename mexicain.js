@@ -6,6 +6,15 @@ const Tools = require('./Tools.js')
 const chips = require('./chips');
 const request = require('request');
 const dateHelper = require('./date.js');
+const Entities = require('html-entities').AllHtmlEntities;
+const entities = new Entities();
+
+//Capitalize the first letter of an str : str.capitalize()
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1)
+}
+
+//Init all chips event
 chips.init(bot);
 
 alban = [   'Est chef de projet',
@@ -62,6 +71,36 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
         });
     })
 }
+
+bot.on('message', function(message){
+    if(message.content === "!code")
+    {
+        request.get({ url : "https://lesjoiesducode.fr/" }, (err, res, data) => {
+            var regexRandomUrl = new RegExp('(?<=href=").*?(?="><i class="fas fa-random")', "gm");
+            var newUrl = data.match(regexRandomUrl)[0];
+            
+            request.get({ url : newUrl }, (err, res, data) => {
+                var regexTitle = new RegExp('(?<=<h1 class="blog-post-title">).*?(?=<\/h1>)', "gm");
+                var title = data.match(regexTitle)[0];
+                title = entities.decode(title);
+                title = title.capitalize();
+
+                var regexGif = new RegExp('(?<=og:image" content=").*?.gif(?=")', "gm");
+                var gifUrl = data.match(regexGif);
+
+                if(gifUrl != null) {
+                    message.channel.send(gifUrl[0]);
+                    message.channel.send(title);
+                }
+                else {
+                    message.channel.send(newUrl);
+                }
+            });
+        });
+    }
+});
+
+
 
 bot.on('message',function(message){
     if(message.content.startsWith('!rgif')) {
