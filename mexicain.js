@@ -110,6 +110,7 @@ bot.on('message', function(message){
 
 bot.on('message',function(message){
     if(message.content==='!help'){
+        newCommands = commands;
         request.get({
             url: config.url.api+'/event/get',
             json: true,
@@ -122,11 +123,11 @@ bot.on('message',function(message){
             } else {
                 if(data.error != 'ERROR'){
                     data.data.forEach(function(element){
-                        commands.push(element['event']);
+                        newCommands.push(element['event']);
                         console.log(commands);
                     })
                     messageHelp = '```'
-                    commands.forEach(function(element){
+                    newCommands.forEach(function(element){
                         messageHelp+=element+'\n';
                     })
                     messageHelp += '```'
