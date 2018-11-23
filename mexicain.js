@@ -158,7 +158,7 @@ bot.on('message',function(message){
 })
 
 bot.on('message',function(message){
-    if(message.content.toLowerCase().includes("patrick") && message.content != "!patrick") {
+    if(message.content.toLowerCase().includes("patrick") && !message.content.toLowerCase().includes("!patrick")) {
         message.channel.send("https://bit.ly/2QegW82");
     }
 })
