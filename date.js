@@ -40,13 +40,17 @@ module.exports = {
     }, 
 
     etreJourEpsi : function (searchedDate) {
-        const File = require('./File');
-
-        var csv = File.getFileContent('files/joursEpsi.csv');
-        var joursEpsi = File.csvToArray(csv);
+        var joursEpsi = this.getJoursEpsi();
 
         return typeof joursEpsi.find(function(obj) {
             return obj.Date == searchedDate.toLocaleDateString();
         }) !== 'undefined'
+    },
+
+    getJoursEpsi : function() {
+        const File = require('./File');
+
+        var csv = File.getFileContent('files/joursEpsi.csv');
+        return File.csvToArray(csv);
     }
 }
