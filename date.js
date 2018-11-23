@@ -52,5 +52,12 @@ module.exports = {
 
         var csv = File.getFileContent('files/joursEpsi.csv');
         return File.csvToArray(csv);
-    }
+    },
+
+    nbJoursEpsiRestant : function() {
+        var joursEpsi = this.getJoursEpsi();
+        var todayDate = new Date();
+
+        return joursEpsi.filter(obj => new Date(obj.Date) > todayDate).length
+    },
 }
