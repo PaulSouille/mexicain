@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
-const Tools = require('./Tools.js')
 const chips = require('./chips');
 const request = require('request');
 const dateHelper = require('./date.js');
@@ -13,6 +12,15 @@ const entities = new Entities();
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }
+//fill this array when you add command.
+commands = ['!help',
+            '!news',
+            '!rgif <param>',
+            '!code',
+            '!alban',
+            '!chips'
+            ];
+
 
 //Init all chips event
 chips.init(bot);
@@ -49,7 +57,6 @@ if(typeof config.token.newsapi !== 'undefined' && config.token.newsapi !== '') {
 
 
 if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url de l'api n'est pas spécifié, on écoute pas l'évenement
-    console.log("test");
     bot.on('message',function(message){
         var url = config.url.api+"/message?event="+message;
         request.get({
@@ -75,7 +82,7 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
 bot.on('message', function(message){
     if(message.content === "!code")
     {
-        request.get({ url : "https://lesjoiesducode.fr/" }, (err, res, data) => {
+        request.get({ url : config.url.joiesCode }, (err, res, data) => {
             var regexRandomUrl = new RegExp('(?<=href=").*?(?="><i class="fas fa-random")', "gm");
             var newUrl = data.match(regexRandomUrl)[0];
             
@@ -100,6 +107,35 @@ bot.on('message', function(message){
     }
 });
 
+
+bot.on('message',function(message){
+    if(message.content==='!help'){
+        request.get({
+            url: config.url.api+'/event/get',
+            json: true,
+            headers: {'User-Agent': 'request'}
+        }, (err, res, data) => {
+            if (err) {
+                console.log(err);
+            } else if (res.statusCode !== 200) {
+                console.log('Status:', res.statusCode);
+            } else {
+                if(data.error != 'ERROR'){
+                    data.data.forEach(function(element){
+                        commands.push(element['event']);
+                        console.log(commands);
+                    })
+                    messageHelp = '```'
+                    commands.forEach(function(element){
+                        messageHelp+=element+'\n';
+                    })
+                    messageHelp += '```'
+                    message.channel.send(messageHelp);
+            }
+        }
+        });
+    }
+})
 
 
 bot.on('message',function(message){
