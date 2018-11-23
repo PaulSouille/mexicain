@@ -39,30 +39,25 @@ module.exports = {
         }
     }, 
 
-    etreJourEpsi: function(date) {
-        return this.getNbCours(date) > 0;
+    etreJourEpsi : function (searchedDate) {
+        var joursEpsi = this.getJoursEpsi();
+
+        return typeof joursEpsi.find(function(obj) {
+            return obj.Date == searchedDate.toLocaleDateString();
+        }) !== 'undefined'
     },
 
-    getNbCours: function(date) {
-        strDate = date.toLocaleDateString("en-US");
+    getJoursEpsi : function() {
+        const File = require('./File');
 
-        var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-        const Http = new XMLHttpRequest();
-        const url='http://edtmobilite.wigorservices.net/WebPsDyn.aspx?Action=posETUD&serverid=h&tel=charly.caillon&date=' + strDate + ' 8:00';
-        
-        Http.open("GET", url, false);
-        Http.send();
+        var csv = File.getFileContent('files/joursEpsi.csv');
+        return File.csvToArray(csv);
+    },
 
-        var response = Http.responseText;
-        var regex = new RegExp('class="Ligne"', "gm")
+    nbJoursEpsiRestant : function() {
+        var joursEpsi = this.getJoursEpsi();
+        var todayDate = new Date();
 
-
-        var nbCours = response.match(regex);
-        if(nbCours == null) {
-            return 0
-        }
-        else {
-            return nbCours.length;
-        }
-    }
+        return joursEpsi.filter(obj => new Date(obj.Date) > todayDate).length
+    },
 }

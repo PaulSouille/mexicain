@@ -158,6 +158,14 @@ bot.on('message',function(message){
     }
 })
 
+
+bot.on('message',function(message){
+    if(message.content === '!joursEpsi') {
+        message.channel.send("Il reste " + dateHelper.nbJoursEpsiRestant() + " jours EPSI.");
+    }
+})
+
+
 bot.on('message',function(message){
     if(message.content.toLowerCase().includes("patrick") && !message.content.toLowerCase().includes("!patrick")) {
         message.channel.send("https://bit.ly/2QegW82");
