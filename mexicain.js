@@ -12,14 +12,6 @@ const entities = new Entities();
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }
-//fill this array when you add command.
-commands = ['!help',
-            '!news',
-            '!rgif <param>',
-            '!code',
-            '!alban',
-            '!chips'
-            ];
 
 
 //Init all chips event
@@ -110,7 +102,14 @@ bot.on('message', function(message){
 
 bot.on('message',function(message){
     if(message.content==='!help'){
-        newCommands = commands;
+        commands = ['!help',
+            '!news',
+            '!rgif <param>',
+            '!code',
+            '!alban',
+            '!chips'
+            ];
+
         request.get({
             url: config.url.api+'/event/get',
             json: true,
@@ -123,15 +122,16 @@ bot.on('message',function(message){
             } else {
                 if(data.error != 'ERROR'){
                     data.data.forEach(function(element){
-                        newCommands.push(element['event']);
+                        commands.push(element['event']);
                         console.log(commands);
                     })
                     messageHelp = '```'
-                    newCommands.forEach(function(element){
+                    commands.forEach(function(element){
                         messageHelp+=element+'\n';
                     })
                     messageHelp += '```'
                     message.channel.send(messageHelp);
+                    console.log(commands);
             }
         }
         });
