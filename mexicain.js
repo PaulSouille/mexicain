@@ -108,7 +108,9 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
                 '!rgif <param>',
                 '!code',
                 '!alban',
-                '!chips'
+                '!chips',
+                '!joursEpsi',
+                '!reste',
                 ];
     
             request.get({
