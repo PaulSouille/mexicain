@@ -69,6 +69,44 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
         }
         });
     })
+
+    bot.on('message',function(message){
+        if(message.content==='!help'){
+            commands = ['!help',
+                '!news',
+                '!rgif <param>',
+                '!code',
+                '!alban',
+                '!chips'
+                ];
+    
+            request.get({
+                url: config.url.api+'/event/get',
+                json: true,
+                headers: {'User-Agent': 'request'}
+            }, (err, res, data) => {
+                if (err) {
+                    console.log(err);
+                } else if (res.statusCode !== 200) {
+                    console.log('Status:', res.statusCode);
+                } else {
+                    if(data.error != 'ERROR'){
+                        data.data.forEach(function(element){
+                            commands.push(element['event']);
+                            console.log(commands);
+                        })
+                        messageHelp = '```'
+                        commands.forEach(function(element){
+                            messageHelp+=element+'\n';
+                        })
+                        messageHelp += '```'
+                        message.channel.send(messageHelp);
+                        console.log(commands);
+                }
+            }
+            });
+        }
+    })
 }
 
 bot.on('message', function(message){
@@ -98,45 +136,6 @@ bot.on('message', function(message){
         });
     }
 });
-
-
-bot.on('message',function(message){
-    if(message.content==='!help'){
-        commands = ['!help',
-            '!news',
-            '!rgif <param>',
-            '!code',
-            '!alban',
-            '!chips'
-            ];
-
-        request.get({
-            url: config.url.api+'/event/get',
-            json: true,
-            headers: {'User-Agent': 'request'}
-        }, (err, res, data) => {
-            if (err) {
-                console.log(err);
-            } else if (res.statusCode !== 200) {
-                console.log('Status:', res.statusCode);
-            } else {
-                if(data.error != 'ERROR'){
-                    data.data.forEach(function(element){
-                        commands.push(element['event']);
-                        console.log(commands);
-                    })
-                    messageHelp = '```'
-                    commands.forEach(function(element){
-                        messageHelp+=element+'\n';
-                    })
-                    messageHelp += '```'
-                    message.channel.send(messageHelp);
-                    console.log(commands);
-            }
-        }
-        });
-    }
-})
 
 
 bot.on('message',function(message){
