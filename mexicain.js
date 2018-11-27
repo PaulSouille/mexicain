@@ -7,6 +7,7 @@ const request = require('request');
 const dateHelper = require('./date.js');
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
+const { JSDOM } = require("jsdom");
 
 //Capitalize the first letter of an str : str.capitalize()
 String.prototype.capitalize = function() {
@@ -28,6 +29,36 @@ alban = [   'Est chef de projet',
             'Peut casser 3 pattes à un canard',
             'Se ferait bien un kebab ce midi'
         ];
+
+
+if(typeof config.url.edt !== 'undefined' && config.url.edt !== '') { //Si l'url de l'emploi du temps n'est pas spécifié, on écoute pas l'évenement
+    bot.on('message', function(message) {
+        if(message.content === '!reste') {
+            var currentDate = new Date();
+            var dateStr = currentDate.toLocaleDateString();
+            var timeStr = currentDate.getHours() + ":" + currentDate.getMinutes();
+            var url = config.url.edt + '&date=' + dateStr + '%20' + timeStr;
+
+            request.get(url, (err, res, data) => {
+                var dom = new JSDOM(data)
+                
+                var firstDiv = dom.window.document.querySelector(".Ligne");
+                if(firstDiv != null) {
+                    var timeEnd = firstDiv.querySelector(".Fin").textContent;
+                    var explode = timeEnd.split(":")
+
+                    var dateFin = new Date(currentDate.getFullYear(), currentDate.getMonth(), 27, parseInt(explode[0]), parseInt(explode[1]));
+
+                    var diff = dateHelper.datediff(currentDate, dateFin);
+                    message.channel.send('Il reste ' + diff.hour + ' heure(s), ' + diff.min + " minutes(s) et " + diff.sec + ' seconde(s) avant la fin du cours !');
+                }
+                else {
+                    message.channel.send('Aucun cours à venir aujourd\'hui .');
+                }
+            });
+        }
+    });
+}
 
 
 if(typeof config.token.newsapi !== 'undefined' && config.token.newsapi !== '') { //Si la clé d'api n'est pas spécifié, on écoute pas l'évenement
@@ -69,6 +100,46 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
         }
         });
     })
+
+    bot.on('message',function(message){
+        if(message.content==='!help'){
+            commands = ['!help',
+                '!news',
+                '!rgif <param>',
+                '!code',
+                '!alban',
+                '!chips',
+                '!joursEpsi',
+                '!reste',
+                ];
+    
+            request.get({
+                url: config.url.api+'/event/get',
+                json: true,
+                headers: {'User-Agent': 'request'}
+            }, (err, res, data) => {
+                if (err) {
+                    console.log(err);
+                } else if (res.statusCode !== 200) {
+                    console.log('Status:', res.statusCode);
+                } else {
+                    if(data.error != 'ERROR'){
+                        data.data.forEach(function(element){
+                            commands.push(element['event']);
+                            console.log(commands);
+                        })
+                        messageHelp = '```'
+                        commands.forEach(function(element){
+                            messageHelp+=element+'\n';
+                        })
+                        messageHelp += '```'
+                        message.channel.send(messageHelp);
+                        console.log(commands);
+                }
+            }
+            });
+        }
+    })
 }
 
 bot.on('message', function(message){
@@ -98,45 +169,6 @@ bot.on('message', function(message){
         });
     }
 });
-
-
-bot.on('message',function(message){
-    if(message.content==='!help'){
-        commands = ['!help',
-            '!news',
-            '!rgif <param>',
-            '!code',
-            '!alban',
-            '!chips'
-            ];
-
-        request.get({
-            url: config.url.api+'/event/get',
-            json: true,
-            headers: {'User-Agent': 'request'}
-        }, (err, res, data) => {
-            if (err) {
-                console.log(err);
-            } else if (res.statusCode !== 200) {
-                console.log('Status:', res.statusCode);
-            } else {
-                if(data.error != 'ERROR'){
-                    data.data.forEach(function(element){
-                        commands.push(element['event']);
-                        console.log(commands);
-                    })
-                    messageHelp = '```'
-                    commands.forEach(function(element){
-                        messageHelp+=element+'\n';
-                    })
-                    messageHelp += '```'
-                    message.channel.send(messageHelp);
-                    console.log(commands);
-            }
-        }
-        });
-    }
-})
 
 
 bot.on('message',function(message){

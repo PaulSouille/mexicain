@@ -33,6 +33,22 @@ module.exports = {
         return date.getDay() != 6 && date.getDay() != 0 && joursFeriesStr.indexOf(this.getFrString(date)) == -1;
     },
 
+    datediff : function(date1, date2) {
+        var diff = {}                           // Initialisation du retour
+        var tmp = date2 - date1;
+        
+        tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+        diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+        
+        tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+        diff.min = tmp % 60;                    // Extraction du nombre de minutes
+        
+        tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+        diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+            
+        return diff;
+    },
+
     getFrString : function(date) {
         if(date != "" && date instanceof Date) {
             return date.toLocaleDateString("fr-FR");
