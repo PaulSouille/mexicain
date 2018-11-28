@@ -49,6 +49,34 @@ module.exports = {
         return diff;
     },
 
+    dateDiffStr : function(date1, date2) {
+        var diff = this.datediff(date1, date2);
+
+        var str = '';
+        if(diff.hour == 1) {
+            str += '1 heure, '
+        }
+        else if(diff.hour > 1) {
+            str += diff.hour + ' heures, '
+        }
+
+        if(diff.min == 1) {
+            str += '1 minute, '
+        }
+        else if(diff.min > 1) {
+            str += diff.min + ' minutes, '
+        }
+
+        if(diff.sec == 1) {
+            str += '1 seconde, '
+        }
+        else if(diff.sec > 1) {
+            str += diff.sec + ' secondes'
+        }
+
+        return str;
+    },
+
     getFrString : function(date) {
         if(date != "" && date instanceof Date) {
             return date.toLocaleDateString("fr-FR");
