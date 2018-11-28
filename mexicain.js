@@ -3,6 +3,7 @@ const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
 const chips = require('./chips');
+const pendu = require('./pendu');
 const request = require('request');
 const dateHelper = require('./date.js');
 const Entities = require('html-entities').AllHtmlEntities;
@@ -13,10 +14,16 @@ const { JSDOM } = require("jsdom");
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }
+String.prototype.replaceAt=function(index, replacement) {
+    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+}
 
 
 //Init all chips event
-chips.init(bot);
+bot.on('ready', function() {
+    chips.init(bot);
+    pendu.init(bot);
+});
 
 alban = [   'Est chef de projet',
             'Est un con',
@@ -29,6 +36,7 @@ alban = [   'Est chef de projet',
             'Peut casser 3 pattes à un canard',
             'Se ferait bien un kebab ce midi'
         ];
+
 
 
 if(typeof config.url.edt !== 'undefined' && config.url.edt !== '') { //Si l'url de l'emploi du temps n'est pas spécifié, on écoute pas l'évenement
@@ -122,6 +130,8 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
                 '!chips',
                 '!joursEpsi',
                 '!reste',
+                '!pendu (channel bot)',
+                '!pendu stop (channel bot)',
                 ];
     
             request.get({
