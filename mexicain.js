@@ -43,15 +43,22 @@ if(typeof config.url.edt !== 'undefined' && config.url.edt !== '') { //Si l'url 
                 request.get(url, (err, res, data) => {
                     var dom = new JSDOM(data)
                     
-                    var firstDiv = dom.window.document.querySelectorAll(".Ligne")[0];
-                    if(firstDiv != null) {
-                        var timeEnd = firstDiv.querySelector(".Fin").textContent;
+                    var lines = dom.window.document.querySelectorAll(".Ligne");
+                    var firstLine = lines[0];
+                    var secondLine = lines[1];
+
+                    if(firstLine != null) {
+                        if(secondLine != null && firstLine.querySelector(".Matiere").textContent === secondLine.querySelector(".Matiere").textContent) {
+                            firstLine = secondLine;
+                        }
+                        
+                        var timeEnd = firstLine.querySelector(".Fin").textContent;
                         var explode = timeEnd.split(":")
 
                         var dateFin = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), parseInt(explode[0]), parseInt(explode[1]));
 
-                        var diff = dateHelper.datediff(currentDate, dateFin);
-                        message.channel.send(message.author.username + ', il te reste ' + diff.hour + ' heure(s), ' + diff.min + " minutes(s) et " + diff.sec + ' seconde(s) avant la fin du module !');
+                        var diff = dateHelper.dateDiffStr(currentDate, dateFin);
+                        message.channel.send(message.author.username + ', il te reste ' + diff + ' avant la fin du module !');
                     }
                     else {
                         message.channel.send('Aucun module à venir aujourd\'hui !');
