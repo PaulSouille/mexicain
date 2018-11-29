@@ -22,7 +22,7 @@ String.prototype.replaceAt=function(index, replacement) {
 //Init all chips event
 bot.on('ready', function() {
     chips.init(bot);
-    pendu.init(bot);
+    pendu(bot);
 });
 
 alban = [   'Est chef de projet',
