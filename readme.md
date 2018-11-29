@@ -16,6 +16,10 @@ config.token.newsapi = "";
 config.url = {};
 config.url.api = ''
 config.url.joiesCode = ''
+config.url.edt = '';
+config.token.epsi = {
+    'idDiscord' : 'idEdt',
+};
 
 module.exports = config;
 ```
