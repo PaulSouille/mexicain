@@ -79,7 +79,7 @@ module.exports = {
                             }
                         }
                         else {
-                            message.channel.send("Vous ne pouvez pas vous chipsé vous même !")     
+                            message.channel.send("Vous ne pouvez pas vous chipser vous même !")     
                         }
                     }
                     else {
