@@ -211,7 +211,7 @@ function formatDiscord(text) {
 function newGame(mot, author) {
     aff = "_ ".repeat(mot.length);
     creator = author;
-    channelBot.send('@here ' + author.username + ' a lancé un pendu !');
+    channelBot.send(author.username + ' a lancé un pendu !');
     channelBot.send('!pendu <lettre/mot> pour participer');
     sendAff();
 }
