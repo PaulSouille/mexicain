@@ -246,12 +246,17 @@ function answer(letter) {
 
 function lostTurn() {
     channelBot.send(pendu[pendu.length-vies]);
-    sendAff();
-
     vies -= 1;
+    
     if(vies === 0) {
+        aff = mot;
+        sendAff();
+
         channelBot.send('Pendu !');
         reset();
         channelBot.send('Relancez une partie en envoyant !pendu <mot> en message privé au bot !');
+    }
+    else {
+        sendAff();
     }
 }
