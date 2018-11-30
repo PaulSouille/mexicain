@@ -240,6 +240,8 @@ function reset() {
     lastPlayer = null;
     vies = pendu.length;
     creator = null;
+    playedLetter = [];
+    playedWord = [];
     channelBot = bot.channels.find(x => x.name === botChannelName);
 }
 
