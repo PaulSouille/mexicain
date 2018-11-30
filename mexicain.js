@@ -9,6 +9,8 @@ const dateHelper = require('./date.js');
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 const { JSDOM } = require("jsdom");
+const Timer = require('./timer');
+var timer = null;
 
 //Capitalize the first letter of an str : str.capitalize()
 String.prototype.capitalize = function() {
@@ -65,8 +67,17 @@ if(typeof config.url.edt !== 'undefined' && config.url.edt !== '') { //Si l'url 
 
                         var dateFin = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), parseInt(explode[0]), parseInt(explode[1]));
 
-                        var diff = dateHelper.dateDiffStr(currentDate, dateFin);
-                        message.channel.send(message.author.username + ', il te reste ' + diff + ' avant la fin du module !');
+                        var diff = dateHelper.datediff(currentDate, dateFin);
+
+                        if(timer != null) {
+                            timer.stop();
+                        }
+                        timer = new Timer(diff.hour, diff.min, diff.sec);
+
+                        message.channel.send(timer.getStr()).then(function(timeMessage) {
+                            timer.callbackDecrease = editMessage.bind(null, timeMessage, timer);
+                            timer.start();
+                        });
                     }
                     else {
                         message.channel.send('Aucun module à venir aujourd\'hui !');
@@ -236,6 +247,10 @@ function sendGif(){
     catch (e){
         console.log(e.stack);
     }
+}
+
+function editMessage (message, timer) {
+    message.edit(timer.getStr());
 }
 
 bot.on('ready', () => {
