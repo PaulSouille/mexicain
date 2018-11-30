@@ -4,6 +4,7 @@ const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
 const chips = require('./chips');
 const pendu = require('./pendu');
+const title = require('./title');
 const request = require('request');
 const dateHelper = require('./date.js');
 const Entities = require('html-entities').AllHtmlEntities;
@@ -25,6 +26,7 @@ String.prototype.replaceAt=function(index, replacement) {
 bot.on('ready', function() {
     chips.init(bot);
     pendu(bot);
+    title(bot);
 });
 
 alban = [   'Est chef de projet',

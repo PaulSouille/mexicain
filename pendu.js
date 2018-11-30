@@ -1,3 +1,5 @@
+const config = require('./config');
+
 var mot = null;
 var aff = null;
 var channelBot = null;
@@ -144,10 +146,9 @@ var pendu = [`\`\`\`
 ];
 var vies = pendu.length;
 
-var botChannelName = 'bot';
 var commande = '!pendu';
 var locale = {
-    'startGame' : 'Lancez une partie en envoyant !pendu <mot> en message privé au bot !',
+    'startGame' : 'Lancez une partie en envoyant ' + commande + ' <mot> en message privé au bot !',
     'noRunningGame' : 'Aucune partie n\'est en cours !',
     'gameStopped' : 'La partie a été stoppée !',
     'onlyCreator' : 'Seul le créateur de la partie peut executer cette commande !',
@@ -157,7 +158,7 @@ var locale = {
     'gameOver' : 'Pendu !',
     'winner' : ' a gagné la partie !',
     'gameStarted' : ' a lancé un pendu !',
-    'participate' : '!pendu <lettre/mot> pour participer',
+    'participate' : commande + ' <lettre/mot> pour participer',
     'playedLetter' : 'Lettres jouées : ',
     'playedWord' : 'Mots joués : ',
 }
@@ -242,7 +243,9 @@ function reset() {
     creator = null;
     playedLetter = [];
     playedWord = [];
-    channelBot = bot.channels.find(x => x.name === botChannelName);
+    if(channelBot == null) {
+        channelBot = bot.channels.find(x => x.name === config.botChannelName);
+    }
 }
 
 function formatDiscord(text) {
