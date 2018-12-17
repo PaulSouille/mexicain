@@ -104,7 +104,7 @@ function formatDiscord(text) {
 function newGame(mot, author) {
     aff = "_ ".repeat(mot.length);
     creator = author;
-    channelBot.send('@here ' + author.username + locale.gameStarted);
+    channelBot.send(author.username + locale.gameStarted);
     channelBot.send(locale.participate);
     sendAff();
 }
