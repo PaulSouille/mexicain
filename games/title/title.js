@@ -32,15 +32,15 @@ module.exports = function(monBot) {
             var index = proposals.findIndex(x => x.author === message.author);
 
             //Si l'utilisateur n'a pas envoyé de proposition, on l'ajoute et on dit qu'il a participé
-            //if(index === -1) {
+            if(index === -1) {
                 proposals.push(message);
                 channelBot.send(message.author + locale.authorPropose);
-            /*}
+            }
 
             //Si l'utilisateur a déjà envoyé une proposition, on la remplace
             else {
                 proposals[index] = message;
-            }*/
+            }
 
 
             message.channel.send(locale.proposalRegistered);
@@ -60,7 +60,7 @@ function votePhase() {
 
         //On mélange les propositions
         proposals.sort(function(a, b){return 0.5 - Math.random()});
-        
+
         //Affichage des phrases
         proposals.forEach(function(proposal) {
             channelBot.send(formatDiscord(proposal.content.replace(commande + ' ', '')))
@@ -115,7 +115,6 @@ function end() {
 
         //On récupère le premier nombre de pouce (le max)
         var max = results[0].reactions.get('👍').count;
-        console.debug(results[0].reactions.get('👍'));
 
         //On récupère les messages qui ont le nombre de pouces max
         var winners = votingMessages.filter(x => x.reactions.get('👍').count === max);
