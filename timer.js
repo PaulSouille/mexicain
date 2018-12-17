@@ -60,4 +60,18 @@ module.exports = class Timer {
             this.callbackStop();
         }
     }
+
+    display(channel = null, autoUpdate = true) {
+        var timer = this;
+        channel.send(this.getStr())
+        .then(function(message) {
+            if(autoUpdate) {
+                timer.callbackDecrease = timer.editMessage.bind(null, message, timer);
+            }
+        })
+    }
+
+    editMessage(message, timer = this) {
+        message.edit(timer.getStr())    
+    }
 }
