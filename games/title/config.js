@@ -2,7 +2,7 @@ var config = require('../../config');
 
 config.title = {};
 config.title.channelName = 'bot-title';
-config.title.proposalsDuration = 15;
+config.title.proposalsDuration = 30;
 config.title.votingDuration = 15;
 config.title.commande = '!title';
 config.title.keyword = 'funny';
