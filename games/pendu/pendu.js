@@ -9,162 +9,14 @@ var creator = null;
 var playedLetter = [];
 var playedWord = [];
 
-var pendu = [`\`\`\`
-                
-                
-                
-                    
-                    
-                    
-                    
-                
-    
-============\`\`\``, `\`\`\`
-    
-    ||          
-    ||          
-    ||          
-    ||         
-    ||         
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||        
-    ||        
-    ||       
-    ||       
-    ||        
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||  /      
-    || /       
-    ||/       
-    ||       
-    ||       
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/        
-    ||        
-    ||        
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/        O
-    ||         |
-    ||        
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/        O/
-    ||         |
-    ||        
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/       \\O/
-    ||         |
-    ||        
-    ||
-    ||
-    ||
-============\`\`\``,
-    `\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/       \\O/
-    ||         |
-    ||          \\
-    ||
-    ||
-    ||
-============\`\`\``,
-`\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/       \\O/
-    ||         |
-    ||        / \\
-    ||
-    ||
-    ||
-============\`\`\``,
-[
-`\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/       \\O/
-    ||         |
-    ||        /∞\\
-    ||         |
-    ||
-    ||
-============\`\`\``,
-`\`\`\`
-    ============
-    ||  /      |
-    || /       |
-    ||/       \\O/
-    ||         ∞
-    ||         |
-    ||        /°\\
-    ||
-    ||
-    ||
-============\`\`\``
-]
-];
-var vies = pendu.length;
-
-var commande = '!pendu';
-var locale = {
-    'startGame' : 'Lancez une partie en envoyant ' + commande + ' <mot> en message privé au bot !',
-    'noRunningGame' : 'Aucune partie n\'est en cours !',
-    'gameStopped' : 'La partie a été stoppée !',
-    'onlyCreator' : 'Seul le créateur de la partie peut executer cette commande !',
-    'onlyOneWord' : 'Un seul mot est autorisé !',
-    'alreadyRunningGame' : 'Une partie est déjà en cours ! ',
-    'noSpaceProposal' : 'Vous ne pouvez pas faire de proposition avec un espace !',
-    'gameOver' : 'Pendu !',
-    'winner' : ' a gagné la partie !',
-    'gameStarted' : ' a lancé un pendu !',
-    'participate' : commande + ' <lettre/mot> pour participer',
-    'playedLetter' : 'Lettres jouées : ',
-    'playedWord' : 'Mots joués : ',
-}
+var vies = config.pendu.pendu.length;
+var commande = config.pendu.commande;
+var locale = config.pendu.locale;
+var pendu = config.pendu.pendu;
 
 module.exports = function(monBot) {
         bot = monBot;
+        channelBot = bot.channels.find(x => x.name === config.pendu.channelName);
         reset();
 
         bot.on('message', function (message) {
@@ -239,13 +91,10 @@ function reset() {
     mot = null;
     aff = null;
     lastPlayer = null;
-    vies = pendu.length;
+    vies =pendu.length;
     creator = null;
     playedLetter = [];
     playedWord = [];
-    if(channelBot == null) {
-        channelBot = bot.channels.find(x => x.name === config.botChannelName);
-    }
 }
 
 function formatDiscord(text) {
@@ -255,7 +104,7 @@ function formatDiscord(text) {
 function newGame(mot, author) {
     aff = "_ ".repeat(mot.length);
     creator = author;
-    channelBot.send(author.username + locale.gameStarted);
+    channelBot.send('@here ' + author.username + locale.gameStarted);
     channelBot.send(locale.participate);
     sendAff();
 }

@@ -2,9 +2,7 @@ const Discord = require('discord.js');
 const config = require('./config');
 const bot = new Discord.Client();
 var giphy = require('giphy-api')(config.token.giphy);
-const chips = require('./chips');
-const pendu = require('./pendu');
-const title = require('./title');
+const games = require('./games/games');
 const request = require('request');
 const dateHelper = require('./date.js');
 const Entities = require('html-entities').AllHtmlEntities;
@@ -21,12 +19,8 @@ String.prototype.replaceAt=function(index, replacement) {
     return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
 }
 
-
-//Init all chips event
 bot.on('ready', function() {
-    chips.init(bot);
-    pendu(bot);
-    title(bot);
+    games(bot);
 });
 
 alban = [   'Est chef de projet',

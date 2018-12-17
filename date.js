@@ -92,7 +92,7 @@ module.exports = {
     },
 
     getJoursEpsi : function() {
-        const File = require('./File');
+        const File = require('./file');
 
         var csv = File.getFileContent('files/joursEpsi.csv');
         return File.csvToArray(csv);
@@ -103,5 +103,10 @@ module.exports = {
         var todayDate = new Date();
 
         return joursEpsi.filter(obj => new Date(obj.Date) > todayDate).length
+    },
+
+    //Retourne le prochain vendredi
+    getNextWeekDay(date, idDay) {
+        return date.setDate(date.getDate() + (idDay + 7 - date.getDay()) % 7);
     },
 }
