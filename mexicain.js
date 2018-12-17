@@ -35,8 +35,6 @@ alban = [   'Est chef de projet',
             'Se ferait bien un kebab ce midi'
         ];
 
-
-
 if(typeof config.url.edt !== 'undefined' && config.url.edt !== '') { //Si l'url de l'emploi du temps n'est pas spécifié, on écoute pas l'évenement
     bot.on('message', function(message) {
         if(message.content === '!reste') {
