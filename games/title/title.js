@@ -58,6 +58,9 @@ function votePhase() {
         phase = 2;
         channelBot.send(locale.votingPhase);
 
+        //On mélange les propositions
+        proposals.sort(function(a, b){return 0.5 - Math.random()});
+        
         //Affichage des phrases
         proposals.forEach(function(proposal) {
             channelBot.send(formatDiscord(proposal.content.replace(commande + ' ', '')))
