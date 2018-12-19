@@ -91,18 +91,23 @@ function votePhase() {
 
 function reactionCollected(reaction, collector) {
     var user = reaction.users.last();
+    var votingMessage = votingMessages.find(x => x.id == reaction.message.id);
 
-    if(reaction.message.proposal.author.id == user.id) {
-        reaction.remove(user);
-    }
-    else {
-        //Si l'utilisateur à déjà voté
-        if(typeof votes[user.id] !== 'undefined') {
-            votes[user.id].remove(user);
+    if(votingMessage !== "undefined") {
+        var proposal_author = votingMessage.proposal.author;
+
+        if(proposal_author.id == user.id) {
+            reaction.remove(user);
         }
+        else {
+            //Si l'utilisateur à déjà voté
+            if(typeof votes[user.id] !== 'undefined') {
+                votes[user.id].remove(user);
+            }
+        }
+    
+        votes[user.id] = reaction;
     }
-
-    votes[user.id] = reaction;
 }
 
 
