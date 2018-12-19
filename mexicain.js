@@ -132,8 +132,9 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
                 '!chips',
                 '!joursEpsi',
                 '!reste',
-                '!pendu (channel bot)',
-                '!pendu stop (channel bot)',
+                '!pendu (channel bot-pendu)',
+                '!pendu stop (channel bot-pendu)',
+                '!title (channel bot-title)',
                 ];
     
             request.get({
