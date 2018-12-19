@@ -67,11 +67,8 @@ if(typeof config.url.edt !== 'undefined' && config.url.edt !== '') { //Si l'url 
                             timer.stop();
                         }
                         timer = new Timer(diff.hour, diff.min, diff.sec);
-
-                        message.channel.send(timer.getStr()).then(function(timeMessage) {
-                            timer.callbackDecrease = editMessage.bind(null, timeMessage, timer);
-                            timer.start();
-                        });
+                        timer.display(message.channel, true);
+                        timer.start();
                     }
                     else {
                         message.channel.send('Aucun module à venir aujourd\'hui !');
