@@ -33,10 +33,10 @@ module.exports = {
         return date.getDay() != 6 && date.getDay() != 0 && joursFeriesStr.indexOf(this.getFrString(date)) == -1;
     },
 
-    datediff : function(date1, date2) {
-        var diff = {}                           // Initialisation du retour
-        var tmp = date2 - date1;
-        
+    toHMS : function(miliseconds) {
+        var tmp = miliseconds;
+        var diff = {} 
+
         tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
         diff.sec = tmp % 60;                    // Extraction du nombre de secondes
         
@@ -45,12 +45,15 @@ module.exports = {
         
         tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
         diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+
+        tmp = Math.floor((tmp-diff.hour)/24);   //Nombre de jours (entiers)
+        diff.day = tmp;                         //Extraction du nombre de jours
             
         return diff;
     },
 
-    dateDiffStr : function(date1, date2) {
-        var diff = this.datediff(date1, date2);
+    toHMS_str : function(miliseconds) {
+        var diff = this.toHMS(miliseconds);
 
         var str = '';
         if(diff.hour == 1) {
@@ -75,6 +78,18 @@ module.exports = {
         }
 
         return str;
+    },
+
+    datediff : function(date1, date2) {
+        var tmp = date2 - date1;
+        
+        return this.toHMS(tmp);
+    },
+
+    dateDiffStr : function(date1, date2) {
+        var tmp = date2-date1;
+
+        return this.toHMS_str(tmp);
     },
 
     getFrString : function(date) {
