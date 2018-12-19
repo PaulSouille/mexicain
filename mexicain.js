@@ -205,6 +205,13 @@ bot.on('message',function(message){
     }
 });
 
+bot.on('message',function(message){
+    if(message.content === '!up') {
+        var time = process.uptime();
+        message.channel.send(dateHelper.toHMS_str(time * 1000));
+    }
+});
+
 
 
 bot.on('message',function(message){
