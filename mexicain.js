@@ -11,6 +11,9 @@ const { JSDOM } = require("jsdom");
 const Timer = require('./timer');
 var timer = null;
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+
 //Capitalize the first letter of an str : str.capitalize()
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
@@ -238,24 +241,23 @@ bot.on('message',function(message){
 
 
 
-function sendGif(){
+
+const startBot = async () => {
+    await delay(2000);
     try{
-        if(dateHelper.etreJourEpsi(new Date())) {
-            bot.channels.find(x => x.name === "bot").send("https://gph.is/2ONGacO");
-        }
+        bot.channels.find(x => x.name === config.log.channel).send(config.log.admin+" Bot started");
+        
 	}
     catch (e){
         console.log(e.stack);
     }
-}
+};
 
-function editMessage (message, timer) {
-    message.edit(timer.getStr());
-}
+startBot();
+
 
 bot.on('ready', () => {
     bot.user.setActivity('plier des chaises');
 })
 
-setInterval(sendGif,14400000);
 bot.login(config.token.discord);

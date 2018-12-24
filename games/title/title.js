@@ -11,7 +11,7 @@ var votes = {};
 var timer = null;
 var commande = config.title.commande;
 var locale = config.title.locale;
-
+ 
 module.exports = function(monBot) {
     bot = monBot;
     channelBot = bot.channels.find(x => x.name === config.title.channelName);
