@@ -112,13 +112,15 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
             headers: {'User-Agent': 'request'}
         }, (err, res, data) => {
             if (err) {
+                bot.channels.find(x => x.name === config.log.channel).send(err);
+
                 console.log(err);
             } else if (res.statusCode !== 200) {
                 console.log('Status:', res.statusCode);
             } else {
                 console.log(data);
                 if(data.error != 'EMPTY'){
-                    console.log(data.data[0].response);
+                    if(data)
                     message.channel.send(data.data[0].response);
             }
         }
@@ -147,7 +149,7 @@ if(typeof config.url.api !== 'undefined' && config.url.api !== '') { //Si l'url 
                 headers: {'User-Agent': 'request'}
             }, (err, res, data) => {
                 if (err) {
-                    console.log(err);
+                    bot.channels.find(x => x.name === config.log.channel).send(err);
                 } else if (res.statusCode !== 200) {
                     console.log('Status:', res.statusCode);
                 } else {
